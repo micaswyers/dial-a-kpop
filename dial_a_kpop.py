@@ -27,6 +27,7 @@ def answer_call():
 def reply_text():
     resp = MessagingResponse()
 
+    resp.message("안녕하세요! 오늘의 케이팦 노래입니다!")
     resp.message(f"Hi! Here is your K-pop song of the day: {SOTD_YT_URL}")
     return str(resp)
 
