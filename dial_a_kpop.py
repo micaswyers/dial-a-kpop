@@ -2,8 +2,11 @@ import os
 
 from flask import Flask
 from twilio.twiml.voice_response import VoiceResponse
+from twilio.twiml.messaging_response import MessagingResponse
+
 
 SOTD_URL = os.environ.get('SOTD_URL')
+SOTD_YT_URL = os.environ.get('SOTD_YT_URL')
 
 app = Flask(__name__)
 
@@ -19,6 +22,14 @@ def answer_call():
     resp.say("들어주셔서 감사합니다.", voice='Polly.Seoyeon')
 
     return str(resp)
+
+@app.route("/sms", methods=['GET', 'POST'])
+def reply_text():
+    resp = MessagingResponse()
+
+    resp.message(f"Hi! Here is your K-pop song of the day: {SOTD_YT_URL}")
+    return str(resp)
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
