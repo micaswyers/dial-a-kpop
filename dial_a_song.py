@@ -1,5 +1,9 @@
+import os
+
 from flask import Flask
 from twilio.twiml.voice_response import VoiceResponse
+
+SOTD_URL = os.environ.get('SOTD_URL')
 
 app = Flask(__name__)
 
@@ -9,7 +13,7 @@ def answer_call():
     resp = VoiceResponse()
 
     resp.say("Here's your K-Pop song of the day!", voice='alice')
-    resp.play("https://vanilla-snowshoe-2871.twil.io/assets/red_flavor_short.mp3")
+    resp.play(SOTD_URL)
 
     return str(resp)
 
