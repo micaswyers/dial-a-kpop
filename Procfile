@@ -1,1 +1,1 @@
-python dial_a_kpop.py
+web: python dial_a_kpop.py
