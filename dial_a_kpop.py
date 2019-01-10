@@ -12,8 +12,11 @@ app = Flask(__name__)
 def answer_call():
     resp = VoiceResponse()
 
-    resp.say("Here's your K-Pop song of the day!", voice='alice')
+    resp.say("Hi, here is your K-pop song of the day!")
+    resp.say("안녕하세요! 오늘의 케이팦 노래입니다.", voice='Polly.Seoyeon')
     resp.play(SOTD_URL)
+    resp.say("Thanks for listening!")
+    resp.say("들어주셔서 감사합니다.", voice='Polly.Seoyeon')
 
     return str(resp)
 
