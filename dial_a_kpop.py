@@ -44,7 +44,7 @@ def reply_subway_voice():
 def reply_subway_sms():
     resp = MessagingResponse()
 
-    resp.message(f"Hello, pretend you are on the Seoul Subway: {SUBWAY_JINGLE}")
+    resp.message(f"Hello, pretend you are on the Seoul Subway: {SUBWAY_JINGLE_URL}")
     return str(resp)
 
 
