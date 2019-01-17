@@ -12,7 +12,7 @@ SUBWAY_JINGLE_URL = os.environ.get('SUBWAY_JINGLE_URL')
 app = Flask(__name__)
 
 
-@app.route("/answer", methods=['GET', 'POST'])
+@app.route("/voice", methods=['GET', 'POST'])
 def answer_call():
     resp = VoiceResponse()
 
@@ -24,20 +24,27 @@ def answer_call():
 
     return str(resp)
 
+@app.route("/sms", methods=['GET', 'POST'])
+def answer_text():
+    resp = MessagingResponse()
+
+    resp.message("안녕하세요! 오늘의 케이팦 노래입니다!")
+    resp.message(f"Hi! Here is your K-pop song of the day: {SOTD_YT_URL}")
+    return str(resp)
+
 @app.route("/subway/voice", methods=['GET', 'POST'])
-def play_subway():
+def reply_subway_voice():
     resp = VoiceResponse()
     resp.say("Hello, pretend you are on the Seoul subway.")
     resp.play(SUBWAY_JINGLE_URL)
     resp.say("Good-bye.")
     return str(resp)
 
-@app.route("/sms", methods=['GET', 'POST'])
-def reply_text():
+@app.route("/subway/sms", methods=['GET', 'POST'])
+def reply_subway_sms():
     resp = MessagingResponse()
 
-    resp.message("안녕하세요! 오늘의 케이팦 노래입니다!")
-    resp.message(f"Hi! Here is your K-pop song of the day: {SOTD_YT_URL}")
+    resp.message(f"Hello, pretend you are on the Seoul Subway: {SUBWAY_JINGLE}")
     return str(resp)
 
 
