@@ -8,6 +8,7 @@ from twilio.twiml.messaging_response import MessagingResponse
 SOTD_URL = os.environ.get('SOTD_URL')
 SOTD_YT_URL = os.environ.get('SOTD_YT_URL')
 SUBWAY_JINGLE_URL = os.environ.get('SUBWAY_JINGLE_URL')
+SUBWAY_JINGLE_YT_URL = os.environ.get('SUBWAY_JINGLE_YT_URL')
 
 app = Flask(__name__)
 
@@ -44,7 +45,7 @@ def reply_subway_voice():
 def reply_subway_sms():
     resp = MessagingResponse()
 
-    resp.message(f"Hello, pretend you are on the Seoul Subway: {SUBWAY_JINGLE_URL}")
+    resp.message(f"Hello, pretend you are on the Seoul Subway: {SUBWAY_JINGLE_YT_URL}")
     return str(resp)
 
 
