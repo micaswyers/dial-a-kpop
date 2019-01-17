@@ -23,6 +23,14 @@ def answer_call():
 
     return str(resp)
 
+@app.route("/subway/voice", methods=['GET', 'POST'])
+def play_subway():
+    resp = VoiceResponse()
+    resp.say("Hello, pretend you are on the Seoul subway.")
+    resp.play(SUBWAY_JINGLE_URL)
+    resp.say("Good-bye.")
+    return str(resp)
+
 @app.route("/sms", methods=['GET', 'POST'])
 def reply_text():
     resp = MessagingResponse()
