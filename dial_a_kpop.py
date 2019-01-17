@@ -7,6 +7,7 @@ from twilio.twiml.messaging_response import MessagingResponse
 
 SOTD_URL = os.environ.get('SOTD_URL')
 SOTD_YT_URL = os.environ.get('SOTD_YT_URL')
+SUBWAY_JINGLE_URL = os.environ.get('SUBWAY_JINGLE_URL')
 
 app = Flask(__name__)
 
