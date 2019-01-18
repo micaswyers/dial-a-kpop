@@ -119,4 +119,11 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# This thing
 .DS_Store
+
+# Migrations
+/migrations
+
+# Configurations
+config.py
