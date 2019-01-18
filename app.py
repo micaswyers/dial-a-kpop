@@ -1,5 +1,7 @@
 import os
 
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 from twilio.twiml.voice_response import VoiceResponse
 from twilio.twiml.messaging_response import MessagingResponse
 
@@ -9,7 +11,14 @@ SOTD_YT_URL = os.environ.get('SOTD_YT_URL')
 SUBWAY_JINGLE_URL = os.environ.get('SUBWAY_JINGLE_URL')
 SUBWAY_JINGLE_YT_URL = os.environ.get('SUBWAY_JINGLE_YT_URL')
 
+
 app = Flask(__name__)
+# Move this to app config file
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+from models import Song
 
 @app.route("/voice", methods=['GET', 'POST'])
 def answer_call():
