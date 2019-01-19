@@ -12,7 +12,6 @@ SUBWAY_JINGLE_URL = os.environ.get('SUBWAY_JINGLE_URL')
 SUBWAY_JINGLE_YT_URL = os.environ.get('SUBWAY_JINGLE_YT_URL')
 
 
-print(os.environ['APP_SETTINGS'])
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 

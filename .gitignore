@@ -124,6 +124,3 @@ dmypy.json
 
 # Migrations
 /migrations
-
-# Configurations
-config.py
