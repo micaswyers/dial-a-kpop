@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import random
 
@@ -30,22 +31,27 @@ def answer_call():
 
     resp.say("Hi, here is your K-pop song of the day!")
     resp.say("안녕하세요! 오늘의 케이팦 노래입니다.", voice='Polly.Seoyeon')
-    # Retrieve random song from DB
-    random_song_id = random.randrange(1, Song.query.count())
-    random_song = Song.query.filter_by(id=random_song_id).first()
-    resp.play(random_song.asset_url)
+    sotd = _get_song()
+    resp.play(sotd.asset_url)
     resp.say("Thanks for listening!")
     resp.say("들어주셔서 감사합니다.", voice='Polly.Seoyeon')
 
     return str(resp)
 
+def _get_song():
+    today = datetime.now().timetuple().tm_yday
+    # TODO: Replace magic # with count of songs in db
+    query_id = today % 23
+    todays_song = Song.query.filter_by(id=query_id).first()
+    return todays_song
 
 @app.route("/sms", methods=['GET', 'POST'])
 def answer_text():
     resp = MessagingResponse()
 
     resp.message("안녕하세요! 오늘의 케이팦 노래입니다!")
-    resp.message(f"Hi! Here is your K-pop song of the day: {SOTD_YT_URL}")
+    sotd = _get_song()
+    resp.message(f"Hi! Here is your K-pop song of the day: {sotd.video_url}")
     return str(resp)
 
 @app.route("/subway/voice", methods=['GET', 'POST'])
