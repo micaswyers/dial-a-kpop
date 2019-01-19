@@ -8,12 +8,6 @@ from twilio.twiml.voice_response import VoiceResponse
 from twilio.twiml.messaging_response import MessagingResponse
 
 
-SOTD_URL = os.environ.get('SOTD_URL')
-SOTD_YT_URL = os.environ.get('SOTD_YT_URL')
-SUBWAY_JINGLE_URL = os.environ.get('SUBWAY_JINGLE_URL')
-SUBWAY_JINGLE_YT_URL = os.environ.get('SUBWAY_JINGLE_YT_URL')
-
-
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -29,10 +23,11 @@ def hello():
 def answer_call():
     resp = VoiceResponse()
 
-    resp.say("Hi, here is your K-pop song of the day!")
-    resp.say("안녕하세요! 오늘의 케이팦 노래입니다.", voice='Polly.Seoyeon')
     sotd = _get_song()
+    resp.say("Hi, here is your K-pop song of the day!")
     resp.say(f"{sotd.title} by {sotd.artist}")
+    resp.say("안녕하세요! 오늘의 케이팦 노래입니다.", voice='Polly.Seoyeon')
+    resp.say(f"{sotd.korean_artist}의 {sotd.title}", voice='Polly.Seoyeon')
     resp.play(sotd.asset_url)
     resp.say("Thanks for listening!")
     resp.say("들어주셔서 감사합니다.", voice='Polly.Seoyeon')
@@ -42,7 +37,7 @@ def answer_call():
 def _get_song():
     today = datetime.now().timetuple().tm_yday
     # TODO: Replace magic # with count of songs in db
-    query_id = today % 23
+    query_id = today % 19
     todays_song = Song.query.filter_by(id=query_id).first()
     return todays_song
 
@@ -50,9 +45,9 @@ def _get_song():
 def answer_text():
     resp = MessagingResponse()
 
-    resp.message("안녕하세요! 오늘의 케이팦 노래입니다!")
     sotd = _get_song()
     resp.message(f"Hi! Here is your K-pop song of the day: '{sotd.title}' by {sotd.artist}'")
+    resp.message(f"안녕하세요! 오늘의 케이팦 노래입니다: {sotd.korean_artist}의 {sotd.title}")
     resp.message(f"{sotd.video_url}")
     return str(resp)
 
