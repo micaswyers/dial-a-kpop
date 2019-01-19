@@ -1,4 +1,5 @@
 import os
+import random
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -29,11 +30,15 @@ def answer_call():
 
     resp.say("Hi, here is your K-pop song of the day!")
     resp.say("안녕하세요! 오늘의 케이팦 노래입니다.", voice='Polly.Seoyeon')
-    resp.play(SOTD_URL)
+    # Retrieve random song from DB
+    random_song_id = random.randrange(1, Song.query.count())
+    random_song = Song.query.filter_by(id=random_song_id).first()
+    resp.play(random_song.asset_url)
     resp.say("Thanks for listening!")
     resp.say("들어주셔서 감사합니다.", voice='Polly.Seoyeon')
 
     return str(resp)
+
 
 @app.route("/sms", methods=['GET', 'POST'])
 def answer_text():
