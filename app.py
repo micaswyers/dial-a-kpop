@@ -32,6 +32,7 @@ def answer_call():
     resp.say("Hi, here is your K-pop song of the day!")
     resp.say("안녕하세요! 오늘의 케이팦 노래입니다.", voice='Polly.Seoyeon')
     sotd = _get_song()
+    resp.say(f"{sotd.title} by {sotd.artist}")
     resp.play(sotd.asset_url)
     resp.say("Thanks for listening!")
     resp.say("들어주셔서 감사합니다.", voice='Polly.Seoyeon')
@@ -51,7 +52,8 @@ def answer_text():
 
     resp.message("안녕하세요! 오늘의 케이팦 노래입니다!")
     sotd = _get_song()
-    resp.message(f"Hi! Here is your K-pop song of the day: {sotd.video_url}")
+    resp.message(f"Hi! Here is your K-pop song of the day: '{sotd.title}' by {sotd.artist}'")
+    resp.message(f"{sotd.video_url}")
     return str(resp)
 
 @app.route("/subway/voice", methods=['GET', 'POST'])
