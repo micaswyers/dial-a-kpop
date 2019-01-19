@@ -4,6 +4,11 @@ import random
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+from sqlalchemy.orm import (
+    scoped_session,
+    sessionmaker,
+)
 from twilio.twiml.voice_response import VoiceResponse
 from twilio.twiml.messaging_response import MessagingResponse
 
@@ -15,6 +20,8 @@ db = SQLAlchemy(app)
 
 from models import *
 
+ENGINE = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+session = scoped_session(sessionmaker(bind=ENGINE))
 SOTD_URL = os.environ['SOTD_URL']
 SOTD_YT_URL = os.environ['SOTD_YT_URL']
 
@@ -30,8 +37,6 @@ def answer_call():
     resp.say("안녕하세요! 오늘의 케이팦 노래입니다.", voice='Polly.Seoyeon')
     sotd = _get_song()
     if sotd:
-        resp.say(f"{sotd.title} by {sotd.artist}")
-        resp.say(f"{sotd.korean_artist}의 {sotd.title}", voice='Polly.Seoyeon')
         resp.play(sotd.asset_url)
     else:
         resp.play(SOTD_URL)
@@ -42,7 +47,6 @@ def answer_call():
 
 def _get_song():
     today = datetime.now().timetuple().tm_yday
-    # TODO: Replace magic # with count of songs in db
     query_id = (today % 19) + 1
     todays_song = Song.query.filter_by(id=query_id).first()
     return todays_song
@@ -51,14 +55,12 @@ def _get_song():
 def answer_text():
     resp = MessagingResponse()
 
+    resp.message("Hi! Here is your K-pop song of the day.")
+    resp.message("안녕하세요! 오늘의 케이팦 노래입니다.")
     sotd = _get_song()
     if sotd:
-        resp.message(f"Hi! Here is your K-pop song of the day: '{sotd.title}' by {sotd.artist}'")
-        resp.message(f"안녕하세요! 오늘의 케이팦 노래입니다: {sotd.korean_artist}의 {sotd.title}")
         resp.message(f"{sotd.video_url}")
     else:
-        resp.message(f"Hi! Here is your K-pop song of the day:")
-        resp.message(f"안녕하세요! 오늘의 케이팦 노래입니다:")
         resp.message(SOTD_YT_URL)
     return str(resp)
 
