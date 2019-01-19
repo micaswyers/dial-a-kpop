@@ -37,7 +37,7 @@ def answer_call():
 def _get_song():
     today = datetime.now().timetuple().tm_yday
     # TODO: Replace magic # with count of songs in db
-    query_id = today % 19
+    query_id = (today % 19) + 1
     todays_song = Song.query.filter_by(id=query_id).first()
     return todays_song
 
