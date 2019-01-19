@@ -122,5 +122,3 @@ dmypy.json
 # This thing
 .DS_Store
 
-# Migrations
-/migrations
