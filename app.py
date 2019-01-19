@@ -15,6 +15,9 @@ db = SQLAlchemy(app)
 
 from models import *
 
+SOTD_URL = os.environ['SOTD_URL']
+SOTD_YT_URL = os.environ['SOTD_YT_URL']
+
 @app.route("/")
 def hello():
     return "Hello World"
@@ -23,12 +26,15 @@ def hello():
 def answer_call():
     resp = VoiceResponse()
 
-    sotd = _get_song()
     resp.say("Hi, here is your K-pop song of the day!")
-    resp.say(f"{sotd.title} by {sotd.artist}")
     resp.say("안녕하세요! 오늘의 케이팦 노래입니다.", voice='Polly.Seoyeon')
-    resp.say(f"{sotd.korean_artist}의 {sotd.title}", voice='Polly.Seoyeon')
-    resp.play(sotd.asset_url)
+    sotd = _get_song()
+    if sotd:
+        resp.say(f"{sotd.title} by {sotd.artist}")
+        resp.say(f"{sotd.korean_artist}의 {sotd.title}", voice='Polly.Seoyeon')
+        resp.play(sotd.asset_url)
+    else:
+        resp.play(SOTD_URL)
     resp.say("Thanks for listening!")
     resp.say("들어주셔서 감사합니다.", voice='Polly.Seoyeon')
 
@@ -46,9 +52,14 @@ def answer_text():
     resp = MessagingResponse()
 
     sotd = _get_song()
-    resp.message(f"Hi! Here is your K-pop song of the day: '{sotd.title}' by {sotd.artist}'")
-    resp.message(f"안녕하세요! 오늘의 케이팦 노래입니다: {sotd.korean_artist}의 {sotd.title}")
-    resp.message(f"{sotd.video_url}")
+    if sotd:
+        resp.message(f"Hi! Here is your K-pop song of the day: '{sotd.title}' by {sotd.artist}'")
+        resp.message(f"안녕하세요! 오늘의 케이팦 노래입니다: {sotd.korean_artist}의 {sotd.title}")
+        resp.message(f"{sotd.video_url}")
+    else:
+        resp.message(f"Hi! Here is your K-pop song of the day:")
+        resp.message(f"안녕하세요! 오늘의 케이팦 노래입니다:")
+        resp.message(SOTD_YT_URL)
     return str(resp)
 
 @app.route("/subway/voice", methods=['GET', 'POST'])
