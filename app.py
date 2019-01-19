@@ -14,13 +14,10 @@ SUBWAY_JINGLE_YT_URL = os.environ.get('SUBWAY_JINGLE_YT_URL')
 
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
-
-# Move this to app config file
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-#from models import Song
+from models import *
 
 @app.route("/")
 def hello():
