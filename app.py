@@ -48,7 +48,6 @@ def answer_call():
 def _get_song():
     today = datetime.now().timetuple().tm_yday
     num_songs = SESSION.query(Song.id).count()
-    print(f"There are {num_songs} songs in the db.")
     query_id = (today % num_songs) + 1
     todays_song = SESSION.query(Song).filter_by(id=query_id).first()
     return todays_song
