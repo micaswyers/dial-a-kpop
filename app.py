@@ -24,6 +24,8 @@ ENGINE = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
 SESSION = scoped_session(sessionmaker(bind=ENGINE))
 SOTD_URL = os.environ['SOTD_URL']
 SOTD_YT_URL = os.environ['SOTD_YT_URL']
+SUBWAY_JINGLE_URL = os.environ['SUBWAY_JINGLE_URL']
+SUBWAY_JINGLE_YT_URL = os.environ['SUBWAY_JINGLE_YT_URL']
 
 @app.route("/")
 def hello():
