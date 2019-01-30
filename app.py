@@ -58,8 +58,10 @@ def _get_song():
 def answer_text():
     resp = MessagingResponse()
 
-    resp.message("Hi! Here is your K-pop song of the day.")
-    resp.message("안녕하세요! 오늘의 케이팦 노래입니다.")
+    resp.message("""
+        Hi! Here is your K-pop song of the day.\n
+        안녕하세요! 오늘의 케이팦 노래입니다.
+    """)
     sotd = _get_song()
     if sotd:
         resp.message(f"{sotd.video_url}")
