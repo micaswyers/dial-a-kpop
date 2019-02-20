@@ -5,7 +5,7 @@ from app import db, Song
 with open('kpop_songs.csv') as csvfile:
     reader = csv.reader(csvfile)
     counter = 0
-    for song_url, title, artist, korean_artist, video_url in reader:
+    for song_url, title, artist, video_url in reader:
         exists = db.session.query(db.exists().where(Song.title == title)).scalar()
         if exists:
             print(f"{title} already exists in db")
@@ -15,7 +15,6 @@ with open('kpop_songs.csv') as csvfile:
                 asset_url=song_url,
                 title=title,
                 artist=artist,
-                korean_artist=korean_artist,
                 video_url=video_url,
             )
             db.session.add(one_song)
